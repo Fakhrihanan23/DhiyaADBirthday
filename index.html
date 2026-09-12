@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday 🐱🎂</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===== BLOCKED SCREEN ===== -->
+  <div id="blocked">
+    <div class="lock-icon">🔒</div>
+    <h1>Belum Waktunya Dibuka 🎁</h1>
+    <p>
+      Halaman ini adalah kejutan spesial.<br>
+      Sabar ya 💕
+    </p>
+    <div class="date-badge">🗓️ 30 SEPTEMBER 2026</div>
+    <div class="countdown" id="countdown"></div>
+  </div>
+
+  <!-- ===== BACKGROUND ===== -->
+  <div class="bg-board"></div>
+
+  <!-- ===== GATE ===== -->
+  <div id="gate">
+    <div class="cat-emoji">🐱</div>
+    <h1>Sebelum masuk, isi dulu ya 🐾</h1>
+    <p>Masukkan tanggal spesial (format: <b>dd-mm-yyyy</b>)</p>
+    <input id="dateInput" type="text" placeholder="dd-mm-yyyy" maxlength="10" inputmode="numeric" />
+    <button onclick="checkDate()">Masuk 🎂</button>
+    <div class="error" id="errorMsg"></div>
+  </div>
+
+  <!-- ===== LANDING ===== -->
+  <div id="landing">
+    <div class="hero">
+      <div class="hero-card">
+        <div class="cat-big">🐱</div>
+        <h1>Happy Birthday, <span>Dhiya Azkia Dirgantari</span> 🎂</h1>
+        <p class="sub">
+          Sebuah halaman kecil yang dibuat khusus untukmu.<br>
+          Di sini ada kucing-kucing lucu yang ikut merayakan harimu 🐾💕
+        </p>
+
+        <div class="menu">
+          <button onclick="openModal('ucapan')"><span class="emoji">💌</span> Baca Ucapan</button>
+          <button onclick="openGallery()"><span class="emoji">📸</span> Kenangan Kita</button>
+          <button onclick="openModal('doa')"><span class="emoji">🕯️</span> Doa & Harapan</button>
+          <button onclick="launchConfetti()"><span class="emoji">🎉</span> Kejutan!</button>
+          <button class="secret" onclick="openModal('rahasia')"><span class="emoji">🔐</span> Pesan Rahasia</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL UMUM ===== -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <button class="close-x" onclick="closeModal()">×</button>
+      <span class="big-emoji" id="modalEmoji">💌</span>
+      <h2 id="modalTitle">Judul</h2>
+      <p id="modalText">Isi</p>
+    </div>
+  </div>
+
+  <!-- ===== MODAL GALERI KENANGAN ===== -->
+  <div class="modal" id="galleryModal">
+    <div class="modal-card wide">
+      <button class="close-x" onclick="closeGallery()">×</button>
+      <span class="big-emoji">📸</span>
+      <h2>Kenangan Kita</h2>
+      <p style="color:#6b4a54;font-size:14px;">Klik foto untuk zoom, klik video untuk memutar 💕</p>
+
+      <div class="gallery-grid">
+
+        <!-- === FOTO === -->
+        <div class="polaroid" onclick="openLightbox('assets/memories/a.jpeg', 'image')">
+          <img src="assets/memories/a.jpeg" alt="Foto 1" loading="lazy">
+          <div class="caption">Perija > Persib</div>
+        </div>
+
+        <div class="polaroid" onclick="openLightbox('assets/memories/b.jpeg', 'image')">
+          <img src="assets/memories/b.jpeg" alt="Foto 2" loading="lazy">
+          <div class="caption">Rally Ndutt</div>
+        </div>
+
+        <div class="polaroid" onclick="openLightbox('assets/memories/c.jpeg', 'image')">
+          <img src="assets/memories/c.jpeg" alt="Foto 3" loading="lazy">
+          <div class="caption">Jalan bareng</div>
+        </div>
+
+        <div class="polaroid" onclick="openLightbox('assets/memories/d.jpeg', 'image')">
+          <img src="assets/memories/d.jpeg" alt="Foto 4" loading="lazy">
+          <div class="caption">Jalan bareng</div>
+        </div>
+
+        <div class="polaroid" onclick="openLightbox('assets/memories/e.jpeg', 'image')">
+          <img src="assets/memories/e.jpeg" alt="Foto 5" loading="lazy">
+          <div class="caption">Jajan bareng</div>
+        </div>
+
+        <div class="polaroid" onclick="openLightbox('assets/memories/f.jpeg', 'image')">
+          <img src="assets/memories/f.jpeg" alt="Foto 6" loading="lazy">
+          <div class="caption">Jalan bareng</div>
+        </div>
+
+        <div class="polaroid" onclick="openLightbox('assets/memories/g.jpeg', 'image')">
+          <img src="assets/memories/g.jpeg" alt="Foto 7" loading="lazy">
+          <div class="caption">Konser bareng</div>
+        </div>
+
+        <!-- === VIDEO === -->
+        <div class="polaroid" onclick="openLightbox('assets/memories/h.mp4', 'video')">
+          <video src="assets/memories/h.mp4" preload="metadata" muted></video>
+          <div class="play-badge">▶</div>
+          <div class="caption">Preettt</div>
+        </div>
+
+        <!--
+        ============================================
+        CARA TAMBAH FOTO:
+
+        <div class="polaroid" onclick="openLightbox('assets/memories/namafoto.jpg', 'image')">
+          <img src="assets/memories/namafoto.jpg" alt="Foto" loading="lazy">
+          <div class="caption">Caption</div>
+        </div>
+
+        CARA TAMBAH VIDEO:
+
+        <div class="polaroid" onclick="openLightbox('assets/memories/namavideo.mp4', 'video')">
+          <video src="assets/memories/namavideo.mp4" preload="metadata" muted></video>
+          <div class="play-badge">▶</div>
+          <div class="caption">Caption</div>
+        </div>
+        ============================================
+        -->
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="Foto" style="display:none;" onclick="event.stopPropagation()">
+    <video id="lightboxVideo" src="" controls playsinline style="display:none;" onclick="event.stopPropagation()"></video>
+  </div>
+
+  <!-- ===== PLAYER ===== -->
+  <div class="player" id="player">
+    <button id="playBtn" onclick="togglePlay()">▶</button>
+    <span class="info">🎵 Here, There and Everywhere — The Beatles</span>
+  </div>
+
+  <audio id="song" loop>
+    <source src="assets/The Beatles - Here, There and Everywhere [FusIKjztap8].mp3" type="audio/mpeg" />
+  </audio>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
