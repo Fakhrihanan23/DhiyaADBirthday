@@ -3,7 +3,7 @@
 //    Website hanya bisa dibuka mulai 30-09-2026
 // ==========================================
 (function checkBlockedDate() {
-  const TARGET_DATE = new Date(2026, 8, 13); // 30 Sept 2026 (bulan 8 = September)
+  const TARGET_DATE = new Date(2026, 8, 30); // 30 Sept 2026 (bulan 8 = September)
   TARGET_DATE.setHours(0, 0, 0, 0);
 
   const today = new Date();
