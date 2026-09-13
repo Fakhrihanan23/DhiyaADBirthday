@@ -224,23 +224,218 @@ function spawnCats() {
     document.body.appendChild(el);
   });
 }
+// ==========================================
+// 8b. KUE ULANG TAHUN (TIUP LILIN)
+// ==========================================
+function openCake() {
+  document.getElementById("cakeModal").classList.add("active");
+}
 
+function closeCake() {
+  document.getElementById("cakeModal").classList.remove("active");
+  // Reset setelah modal tertutup (biar bisa dimainkan lagi)
+  setTimeout(resetCandles, 500);
+}
+
+// Tiup satu lilin (saat lilin diklik langsung)
+function blowOne(el) {
+  if (el.classList.contains("out")) return;
+  el.classList.add("out");
+  addSmoke(el);
+  checkAllOut();
+}
+
+// Tiup semua lilin sekaligus (saat tombol diklik)
+function blowAll() {
+  const candles = document.querySelectorAll("#candles .candle:not(.out)");
+  if (candles.length === 0) return;
+  candles.forEach((c, i) => {
+    setTimeout(() => {
+      c.classList.add("out");
+      addSmoke(c);
+      checkAllOut();
+    }, i * 320);
+  });
+}
+
+// Efek asap saat lilin mati
+function addSmoke(candle) {
+  const smoke = document.createElement("div");
+  smoke.className = "smoke";
+  smoke.textContent = "💨";
+  candle.appendChild(smoke);
+  setTimeout(() => smoke.remove(), 2000);
+}
+
+// Cek kalau semua lilin sudah mati
+function checkAllOut() {
+  const all = document.querySelectorAll("#candles .candle");
+  const out = document.querySelectorAll("#candles .candle.out");
+  if (all.length > 0 && all.length === out.length) {
+    document.getElementById("cakeMessage").classList.add("show");
+    const btn = document.getElementById("blowBtn");
+    btn.disabled = true;
+    btn.textContent = "Lilin sudah mati ✨";
+    // Confetti meriah!
+    launchConfetti();
+    setTimeout(launchConfetti, 400);
+    setTimeout(launchConfetti, 800);
+  }
+}
+
+// Reset lilin ke kondisi menyala lagi
+function resetCandles() {
+  document.querySelectorAll("#candles .candle").forEach(c => c.classList.remove("out"));
+  document.getElementById("cakeMessage").classList.remove("show");
+  const btn = document.getElementById("blowBtn");
+  btn.disabled = false;
+  btn.textContent = "Tiup Lilin 🎈";
+}
 
 // ==========================================
-// 9. EVENT LISTENERS
+// 8c. POPUP PERPISAHAN + MEOW + PAUSE LAGU
 // ==========================================
-document.getElementById("modal").addEventListener("click", (e) => {
-  if (e.target.id === "modal") closeModal();
+
+// ====== KONFIGURASI ======
+const EXIT_CONFIG = {
+  title: "Sampai Bertemu 1 Tahun Lagi 💕",
+  message: "Terima kasih sudah mampir ya, Dhiya 🐱<br>Semoga harimu selalu menyenangkan.<br>Sampai jumpa di ulang tahun berikutnya!",
+  emojiPool: ["🌸", "🐾", "💕", "✨", "🎀", "🌟", "🐱", "💗", "🦋", "🌷"],
+  confettiColors: ["#ff7aa8", "#ffb6ce", "#ffd6e7", "#fff0b3", "#ff5c91", "#ffd700"]
+};
+
+let exitPopupActive = false;
+let leavingConfirmed = false;   // flag: user sudah konfirmasi mau keluar
+let songWasPlaying = false;
+
+// Tampilkan popup
+function showExitPopup() {
+  if (exitPopupActive) return;
+  exitPopupActive = true;
+
+  // 1. Pause lagu biar meow terdengar
+  songWasPlaying = !song.paused;
+  if (songWasPlaying) {
+    song.pause();
+    playBtn.textContent = "▶";
+  }
+
+  // 2. Set teks dari config
+  document.getElementById("exitTitle").textContent = EXIT_CONFIG.title;
+  document.getElementById("exitMessage").innerHTML = EXIT_CONFIG.message;
+
+  // 3. Random emoji dekorasi
+  const deco = document.getElementById("exitDeco");
+  const shuffled = [...EXIT_CONFIG.emojiPool].sort(() => Math.random() - 0.5);
+  deco.textContent = shuffled.slice(0, 5).join(" ");
+
+  // 4. Tampilkan popup
+  document.getElementById("exitPopup").classList.add("active");
+
+  // 5. Suara meow
+  playMeow();
+
+  // 6. Confetti mini
+  launchPopupConfetti();
+}
+
+// Tombol "Tetap di Halaman"
+function stayOnPage() {
+  document.getElementById("exitPopup").classList.remove("active");
+  document.getElementById("popupConfetti").innerHTML = "";
+  exitPopupActive = false;
+
+  // Resume lagu
+  if (songWasPlaying) {
+    song.play().then(() => {
+      playBtn.textContent = "❚❚";
+    }).catch(() => {});
+    songWasPlaying = false;
+  }
+}
+
+// Tombol "Keluar"
+function leavePage() {
+  leavingConfirmed = true;  // biar beforeunload tidak muncul lagi
+  document.getElementById("exitPopup").classList.remove("active");
+  // Tutup tab
+  window.close();
+  // Kalau tidak bisa (browser sering block), arahkan ke halaman kosong
+  setTimeout(() => {
+    window.location.href = "about:blank";
+  }, 100);
+}
+
+// ==== Suara meow ====
+function playMeow() {
+  const meowAudio = document.getElementById("meowSound");
+  if (meowAudio) {
+    meowAudio.currentTime = 0;
+    meowAudio.play().catch(() => synthMeow());
+  } else {
+    synthMeow();
+  }
+  // Meow kedua
+  setTimeout(() => {
+    if (meowAudio) {
+      meowAudio.currentTime = 0;
+      meowAudio.play().catch(() => {});
+    }
+  }, 400);
+}
+
+function synthMeow() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sawtooth";
+    osc.frequency.setValueAtTime(650, now);
+    osc.frequency.exponentialRampToValueAtTime(900, now + 0.12);
+    osc.frequency.exponentialRampToValueAtTime(450, now + 0.5);
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.exponentialRampToValueAtTime(0.12, now + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.6);
+  } catch (e) {}
+}
+
+// ==== Confetti mini ====
+function launchPopupConfetti() {
+  const container = document.getElementById("popupConfetti");
+  container.innerHTML = "";
+  for (let i = 0; i < 30; i++) {
+    const c = document.createElement("div");
+    c.className = "mini-conf";
+    c.style.left = Math.random() * 100 + "%";
+    c.style.background = EXIT_CONFIG.confettiColors[Math.floor(Math.random() * EXIT_CONFIG.confettiColors.length)];
+    c.style.animationDuration = (1.5 + Math.random() * 1.5) + "s";
+    c.style.animationDelay = (Math.random() * 0.5) + "s";
+    c.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+    container.appendChild(c);
+  }
+  setTimeout(() => { container.innerHTML = ""; }, 4000);
+}
+
+// ==== DETEKSI: kursor keluar ke atas (mau klik X) — TANPA DELAY ====
+document.addEventListener("mouseleave", (e) => {
+  if (e.clientY <= 0
+      && !exitPopupActive
+      && !leavingConfirmed
+      && document.getElementById("landing").style.display === "block") {
+    showExitPopup();  // langsung, tanpa setTimeout
+  }
 });
 
-document.getElementById("galleryModal").addEventListener("click", (e) => {
-  if (e.target.id === "galleryModal") closeGallery();
-});
-
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    closeLightbox();
-    closeModal();
-    closeGallery();
+// ==== BACKUP: kalau user benar-benar klik X tanpa popup muncul ====
+window.addEventListener("beforeunload", (e) => {
+  if (!leavingConfirmed && document.getElementById("landing").style.display === "block") {
+    e.preventDefault();
+    e.returnValue = "";
+    return "";
   }
 });
