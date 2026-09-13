@@ -205,28 +205,28 @@ body {
 ========================================== */
 .menu {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  max-width: 480px;
+  grid-template-columns: repeat(3, 1fr);   /* ← ubah dari 2 jadi 3 */
+  gap: 12px;
+  max-width: 620px;                        /* ← ubah dari 480px jadi 620px */
   margin: 0 auto;
 }
 .menu button {
-  padding: 20px 14px;
+  padding: 16px 10px;           /* ← ubah dari 20px 14px */
   border: 2px solid rgba(255,182,206,0.6);
-  border-radius: 20px;
+  border-radius: 16px;          /* ← ubah dari 20px */
   background: rgba(255, 255, 255, 0.92);
   box-shadow: 0 6px 18px rgba(255, 122, 168, 0.2);
-  font-size: 15px;
+  font-size: 13px;              /* ← ubah dari 15px */
   font-weight: 700;
   color: #b34d6b;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(.2,1.3,.5,1);
   display: flex; flex-direction: column;
-  align-items: center; gap: 10px;
+  align-items: center; gap: 8px;  /* ← ubah dari 10px */
   font-family: inherit;
 }
 .menu button .emoji {
-  font-size: 34px;
+  font-size: 28px;
   transition: transform 0.3s;
 }
 .menu button:hover {
@@ -238,7 +238,6 @@ body {
 .menu button:hover .emoji { transform: scale(1.2) rotate(8deg); }
 
 .menu button.secret {
-  grid-column: 1 / -1;
   background: linear-gradient(135deg, #ffd6e7, #ffb6ce);
   color: #8a2e52;
   border-color: #ff7aa8;
@@ -502,6 +501,114 @@ body {
   75%  { transform: scaleX(-1) translateY(-6px); }
   100% { left: -80px;  transform: scaleX(-1) translateY(0); }
 }
+/* ==========================================
+   POPUP PERPISAHAN
+========================================== */
+/* ==========================================
+   POPUP PERPISAHAN
+========================================== */
+.exit-card {
+  background: linear-gradient(160deg, #fff8fa, #ffe9f1);
+  border: 3px solid #ffb6ce;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.exit-card h2 {
+  font-size: 22px;
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+.exit-card p {
+  font-size: 15px;
+  color: #6b4a54;
+  line-height: 1.8;
+}
+.exit-deco {
+  margin-top: 18px;
+  font-size: 20px;
+  letter-spacing: 6px;
+  animation: floatDeco 2.5s ease-in-out infinite;
+}
+@keyframes floatDeco {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* 2 tombol aksi */
+.exit-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+  position: relative;
+  z-index: 2;
+}
+.exit-actions .blow-btn {
+  flex: 1;
+  margin-top: 0;
+  padding: 14px 12px;
+  font-size: 14px;
+}
+.blow-btn.exit-stay {
+  background: linear-gradient(135deg, #ff7aa8, #ff5c91);
+}
+.blow-btn.exit-leave {
+  background: #fff;
+  color: #b34d6b;
+  border: 2px solid #ffb6ce;
+  box-shadow: 0 6px 14px rgba(255,122,168,0.2);
+}
+.blow-btn.exit-leave:hover {
+  background: #ffe0ec;
+  color: #8a2e52;
+}
+
+/* Animasi masuk */
+#exitPopup.active .modal-card {
+  animation: popSoft 0.5s cubic-bezier(.2,1.3,.5,1);
+}
+@keyframes popSoft {
+  0%   { transform: scale(0.85) rotate(-3deg); opacity: 0; }
+  60%  { transform: scale(1.02) rotate(1deg);  opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+/* Confetti mini */
+.popup-confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 23px;
+}
+.mini-conf {
+  position: absolute;
+  top: -12px;
+  width: 8px;
+  height: 10px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: miniFall linear forwards;
+}
+@keyframes miniFall {
+  0%   { opacity: 1; transform: translateY(0) rotate(0); }
+  100% { opacity: 0; transform: translateY(420px) rotate(540deg); }
+}
+
+.exit-card .close-x,
+.exit-card .big-emoji,
+.exit-card h2,
+.exit-card p,
+.exit-card .exit-deco { position: relative; z-index: 2; }
+
+@media (max-width: 480px) {
+  .exit-card h2 { font-size: 18px; }
+  .exit-card p { font-size: 13px; }
+  .exit-deco { font-size: 16px; letter-spacing: 4px; }
+  .exit-actions { flex-direction: column; }
+  .exit-actions .blow-btn { font-size: 13px; padding: 12px 10px; }
+}
 
 /* ==========================================
    RESPONSIVE
@@ -509,9 +616,255 @@ body {
 @media (max-width: 480px) {
   .hero-card { padding: 30px 18px 26px; }
   .cat-big { font-size: 80px; }
-  .menu { grid-template-columns: repeat(2, 1fr); }
-  .menu button { padding: 16px 10px; font-size: 13px; }
-  .menu button .emoji { font-size: 28px; }
+  .menu { grid-template-columns: repeat(2, 1fr); }   /* ← ubah dari 2 (sudah 2) */
+  .menu button { padding: 14px 8px; font-size: 12px; }
+  .menu button .emoji { font-size: 24px; }
   .player .info { max-width: 130px; font-size: 11px; }
   .cat-walker { font-size: 26px !important; }
+  .cake-scene { min-height: 200px; gap: 2px; }
+  .cat-holder { font-size: 56px; }
+  .cake-top { width: 130px; height: 45px; font-size: 9px; }
+  .cake-mid { width: 142px; height: 42px; font-size: 8px; }
+  .cake-bottom { width: 152px; height: 48px; }
+  .plate { width: 180px; }
+  .candles { gap: 22px; }
+  .candle { height: 36px; }
+  .cake-message { font-size: 15px; }
+  .exit-card h2 { font-size: 18px; }
+  .exit-card p { font-size: 13px; }
+  .exit-deco { font-size: 16px; letter-spacing: 4px; }
+  .mini-conf { width: 6px; height: 8px; }
+}
+
+/* ==========================================
+   MODAL KUE ULANG TAHUN
+========================================== */
+.cake-modal { max-width: 520px; }
+
+.cake-scene {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+  margin: 20px 0 12px;
+  padding: 24px 5px 0;
+  min-height: 240px;
+}
+
+/* Kucing pemegang kue */
+.cat-holder {
+  font-size: 76px;
+  animation: catBob 2s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+  line-height: 1;
+}
+.cat-holder.right { animation-delay: 1s; }
+@keyframes catBob {
+  0%,100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-6px) rotate(3deg); }
+}
+
+/* Cake stack */
+.cake-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.cake {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* Lilin */
+.candles {
+  display: flex;
+  gap: 28px;
+  margin-bottom: -4px;
+  z-index: 3;
+}
+.candle {
+  width: 8px;
+  height: 42px;
+  background: repeating-linear-gradient(
+    45deg,
+    #ff5c91 0, #ff5c91 6px,
+    #fff 6px, #fff 12px
+  );
+  border-radius: 2px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.candle:hover { transform: translateY(-3px); }
+
+.candle .flame {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 22px;
+  background: radial-gradient(ellipse at center bottom, #ffd700 0%, #ff8c00 55%, #ff5c00 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  box-shadow: 0 0 20px #ffb700, 0 0 40px rgba(255,140,0,0.7);
+  animation: flicker 0.4s infinite alternate;
+  transition: opacity 0.4s, transform 0.4s;
+}
+.candle .flame::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 10px;
+  background: #fff8b0;
+  border-radius: 50%;
+  opacity: 0.9;
+}
+@keyframes flicker {
+  0%   { transform: translateX(-50%) scale(1)    rotate(-2deg); opacity: 1; }
+  100% { transform: translateX(-50%) scale(1.1)  rotate(2deg);  opacity: 0.85; }
+}
+
+/* Lilin mati */
+.candle.out .flame {
+  opacity: 0;
+  transform: translateX(-50%) scale(0);
+  animation: none;
+}
+
+/* Asap */
+.smoke {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  pointer-events: none;
+  animation: smokeUp 2s forwards;
+}
+@keyframes smokeUp {
+  0%   { opacity: 1; transform: translate(-50%, 0) scale(0.5); }
+  100% { opacity: 0; transform: translate(-50%, -55px) scale(1.6); }
+}
+
+/* Layer kue */
+.cake-top {
+  width: 160px;
+  height: 55px;
+  background: linear-gradient(180deg, #ffb6ce, #ff8eb8);
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(180,77,107,0.6);
+  letter-spacing: 0.5px;
+  position: relative;
+}
+.cake-top::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0; right: 0;
+  height: 8px;
+  background: radial-gradient(circle at 10px 0, #ffd6e7 8px, transparent 8px) repeat-x;
+  background-size: 20px 8px;
+  z-index: 2;
+}
+
+.cake-mid {
+  width: 172px;
+  height: 50px;
+  background: linear-gradient(180deg, #ffd6e7, #ffb6ce);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #b34d6b;
+  font-weight: 700;
+  position: relative;
+}
+.cake-mid::before,
+.cake-mid::after {
+  content: "🍓";
+  position: absolute;
+  font-size: 12px;
+}
+.cake-mid::before { left: 8px; }
+.cake-mid::after  { right: 8px; }
+
+.cake-bottom {
+  width: 184px;
+  height: 55px;
+  background: linear-gradient(180deg, #ff8eb8, #ff5c91);
+  border-radius: 0 0 10px 10px;
+  position: relative;
+}
+.cake-bottom::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 8px; right: 8px;
+  height: 4px;
+  background: rgba(255,255,255,0.35);
+  border-radius: 4px;
+}
+
+/* Piring */
+.plate {
+  width: 220px;
+  height: 12px;
+  background: linear-gradient(180deg, #fff, #e8d5dd);
+  border-radius: 50%;
+  margin-top: 3px;
+  box-shadow: 0 6px 12px rgba(180,77,107,0.25);
+}
+
+/* Tombol tiup */
+.blow-btn {
+  margin-top: 18px;
+  padding: 14px 34px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ff7aa8, #ff5c91);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 8px 20px rgba(255,122,168,0.4);
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+.blow-btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 28px rgba(255,122,168,0.55);
+}
+.blow-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Pesan setelah lilin mati */
+.cake-message {
+  margin-top: 18px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #ff5c91;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s;
+  text-align: center;
+  line-height: 1.5;
+}
+.cake-message.show {
+  opacity: 1;
+  transform: translateY(0);
 }
