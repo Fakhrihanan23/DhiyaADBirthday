@@ -46,6 +46,7 @@
 
         <div class="menu">
           <button onclick="openModal('ucapan')"><span class="emoji">💌</span> Baca Ucapan</button>
+          <button onclick="openCake()"><span class="emoji">🎂</span> Tiup Lilin</button>
           <button onclick="openGallery()"><span class="emoji">📸</span> Kenangan Kita</button>
           <button onclick="openModal('doa')"><span class="emoji">🕯️</span> Doa & Harapan</button>
           <button onclick="launchConfetti()"><span class="emoji">🎉</span> Kejutan!</button>
@@ -141,6 +142,73 @@
     </div>
   </div>
 
+    <!-- ===== MODAL KUE ULANG TAHUN ===== -->
+  <div class="modal" id="cakeModal">
+    <div class="modal-card cake-modal">
+      <button class="close-x" onclick="closeCake()">×</button>
+      <span class="big-emoji">🎂</span>
+      <h2>Tiup Lilinnya!</h2>
+      <p style="color:#6b4a54;font-size:14px;">Klik tombol di bawah, atau klik lilinnya satu per satu 💕</p>
+
+      <div class="cake-scene">
+        <div class="cat-holder left">🐱</div>
+
+        <div class="cake-stack">
+          <div class="cake">
+            <div class="candles" id="candles">
+              <div class="candle" onclick="blowOne(this)"><div class="flame"></div></div>
+              <div class="candle" onclick="blowOne(this)"><div class="flame"></div></div>
+              <div class="candle" onclick="blowOne(this)"><div class="flame"></div></div>
+            </div>
+            <div class="cake-top">Happy Birthday</div>
+            <div class="cake-mid">Dhiya Azkia Dirgantari</div>
+            <div class="cake-bottom"></div>
+          </div>
+          <div class="plate"></div>
+        </div>
+
+        <div class="cat-holder right">😺</div>
+      </div>
+
+      <button class="blow-btn" id="blowBtn" onclick="blowAll()">Tiup Lilin 🎈</button>
+
+      <div class="cake-message" id="cakeMessage">
+        🎉 Yeay! Selamat Ulang Tahun! 🎉<br>
+        <span style="font-size:13px;color:#8a5a68;font-weight:600;">Semoga semua doamu terkabul 💕</span>
+      </div>
+    </div>
+  </div>
+
+    <!-- ===== POPUP PERPISAHAN ===== -->
+    <!-- ===== POPUP PERPISAHAN ===== -->
+  <div class="modal" id="exitPopup">
+    <div class="modal-card exit-card">
+      <div class="popup-confetti" id="popupConfetti"></div>
+      <span class="big-emoji">👋</span>
+      <h2 id="exitTitle">Sampai Bertemu 1 Tahun Lagi 💕</h2>
+      <p id="exitMessage">
+        Terima kasih sudah mampir ya, Dhiya 🐱<br>
+        Semoga harimu selalu menyenangkan.<br>
+        Sampai jumpa di ulang tahun berikutnya!
+      </p>
+      <div class="exit-deco" id="exitDeco">🌸 🐾 🌸 🐾 🌸</div>
+
+      <div class="exit-actions">
+        <button class="blow-btn exit-stay" onclick="stayOnPage()">
+          Tetap di Halaman 💗
+        </button>
+        <button class="blow-btn exit-leave" onclick="leavePage()">
+          Keluar 👋
+        </button>
+      </div>
+    </div>
+  </div>
+
+    <!-- Audio meow (opsional — taruh meow.mp3 di folder assets/) -->
+  <audio id="meowSound" preload="auto">
+    <source src="assets/698633__suicdxsaturday__meow51252153-2.ogg" type="audio/mpeg" />
+  </audio>
+
   <!-- ===== LIGHTBOX ===== -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox()">
     <img id="lightboxImg" src="" alt="Foto" style="display:none;" onclick="event.stopPropagation()">
@@ -150,11 +218,11 @@
   <!-- ===== PLAYER ===== -->
   <div class="player" id="player">
     <button id="playBtn" onclick="togglePlay()">▶</button>
-    <span class="info">🎵 Here, There and Everywhere — The Beatles</span>
+    <span class="info">🎵 GO! — Cortis</span>
   </div>
 
   <audio id="song" loop>
-    <source src="assets/The Beatles - Here, There and Everywhere [FusIKjztap8].mp3" type="audio/mpeg" />
+    <source src="assets/CORTIS (코르티스) 'GO!' Official MV.mp3" type="audio/mpeg" />
   </audio>
 
   <script src="js/script.js"></script>
